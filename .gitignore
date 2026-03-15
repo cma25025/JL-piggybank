@@ -36,6 +36,9 @@ yarn-error.*
 # typescript
 *.tsbuildinfo
 
+# Test coverage
+coverage/
+
 # Database (local dev data)
 data/*.db
 data/backups/
