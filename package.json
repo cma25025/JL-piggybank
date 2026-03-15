@@ -12,7 +12,9 @@
     "lint": "eslint 'src/**/*.{ts,tsx}' 'app/**/*.{ts,tsx}'",
     "typecheck": "tsc --noEmit",
     "format": "prettier --write 'src/**/*.{ts,tsx}' 'app/**/*.{ts,tsx}'",
-    "quality": "npm run typecheck && npm run lint && npm run test"
+    "quality": "npm run typecheck && npm run lint && npm run test",
+    "prepare": "husky",
+    "audit": "npm audit --audit-level=high"
   },
   "dependencies": {
     "expo": "~55.0.6",
@@ -36,11 +38,19 @@
     "@typescript-eslint/parser": "^8.57.0",
     "eslint": "^10.0.3",
     "eslint-config-prettier": "^10.1.8",
+    "husky": "^9.1.7",
     "jest": "^30.3.0",
     "jest-expo": "^55.0.9",
+    "lint-staged": "^16.4.0",
     "prettier": "^3.8.1",
     "ts-jest": "^29.4.6",
     "typescript": "~5.9.2"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ]
   },
   "private": true
 }

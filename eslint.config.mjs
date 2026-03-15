@@ -27,7 +27,7 @@ export default [
     },
   },
   {
-    files: ["src/**/__tests__/**/*.{ts,tsx}"],
+    files: ["src/**/__tests__/**/*.{ts,tsx}", "app/**/__tests__/**/*.{ts,tsx}"],
     rules: {
       // Test files need flexibility for mocks and type assertions
       "@typescript-eslint/no-explicit-any": "off",
