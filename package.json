@@ -1,0 +1,56 @@
+{
+  "name": "piggybank-mobile",
+  "version": "1.0.0",
+  "main": "expo-router/entry",
+  "scripts": {
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "web": "expo start --web",
+    "test": "jest",
+    "test:coverage": "jest --coverage",
+    "lint": "eslint 'src/**/*.{ts,tsx}' 'app/**/*.{ts,tsx}'",
+    "typecheck": "tsc --noEmit",
+    "format": "prettier --write 'src/**/*.{ts,tsx}' 'app/**/*.{ts,tsx}'",
+    "quality": "npm run typecheck && npm run lint && npm run test",
+    "prepare": "husky",
+    "audit": "npm audit --audit-level=high"
+  },
+  "dependencies": {
+    "expo": "~55.0.6",
+    "expo-constants": "^55.0.7",
+    "expo-haptics": "^55.0.8",
+    "expo-linking": "^55.0.7",
+    "expo-router": "^55.0.5",
+    "expo-secure-store": "^55.0.8",
+    "expo-sqlite": "^55.0.10",
+    "expo-status-bar": "~55.0.4",
+    "react": "19.2.0",
+    "react-native": "0.83.2",
+    "react-native-gesture-handler": "^2.30.0",
+    "react-native-safe-area-context": "^5.7.0",
+    "react-native-screens": "^4.24.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^30.0.0",
+    "@types/react": "~19.2.2",
+    "@typescript-eslint/eslint-plugin": "^8.57.0",
+    "@typescript-eslint/parser": "^8.57.0",
+    "eslint": "^10.0.3",
+    "eslint-config-prettier": "^10.1.8",
+    "husky": "^9.1.7",
+    "jest": "^30.3.0",
+    "jest-expo": "^55.0.9",
+    "lint-staged": "^16.4.0",
+    "prettier": "^3.8.1",
+    "ts-jest": "^29.4.6",
+    "typescript": "~5.9.2"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ]
+  },
+  "private": true
+}
