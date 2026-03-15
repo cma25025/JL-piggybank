@@ -6,14 +6,12 @@ import {
   Pressable,
   StyleSheet,
   ScrollView,
-  Alert,
 } from "react-native";
 import { useRouter } from "expo-router";
 import { createAccount } from "../src/db/repository";
 import {
   validateAccountName,
   validateInterestRate,
-  validateCompoundingPeriod,
 } from "../src/services/validation";
 import { COLORS, COMPOUNDING_PERIODS } from "../src/lib/constants";
 import type { CompoundingPeriod } from "../src/lib/types";
@@ -55,8 +53,8 @@ export default function CreateAccountScreen() {
         initial_balance: 0,
       });
       router.back();
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Failed to create account");
     }
   };
 

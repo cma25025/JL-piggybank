@@ -11,7 +11,6 @@ import {
 import { COLORS, DEPOSIT_CATEGORIES, WITHDRAWAL_CATEGORIES } from "../lib/constants";
 import { createTransaction } from "../db/repository";
 import { validateTransactionAmount, validateCategory } from "../services/validation";
-import type { TransactionType } from "../lib/types";
 
 interface TransactionFormProps {
   accountId: number;
@@ -62,8 +61,8 @@ export default function TransactionForm({
       setNote("");
       setCategory("");
       onSuccess();
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Transaction failed");
     } finally {
       setLoading(false);
     }
