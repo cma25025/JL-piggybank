@@ -2,7 +2,12 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import TransactionForm from '../../components/TransactionForm';
 import TransactionList from '../../components/TransactionList';
-import { getAccount, getTransactions, calculateInterest, getAccountStatistics } from '../../utils/api';
+import {
+  getAccount,
+  listTransactions,
+  getAccountStatistics,
+  calculateInterest
+} from '../../lib/db';
 import { ArrowLeft, RefreshCw, Settings, TrendingUp, TrendingDown, DollarSign, Calendar } from 'lucide-react';
 
 const { id } = Astro.params;
@@ -11,32 +16,36 @@ if (!id) {
     return Astro.redirect('/');
 }
 
-let account = null;
-let transactions = [];
-let statistics = null;
-let error = null;
+let account: any = null;
+let transactions: any[] = [];
+let statistics: any = null;
+let error: string | null = null;
 
-try {
-  account = await getAccount(id);
-  transactions = await getTransactions(id);
-  statistics = await getAccountStatistics(id);
-} catch (e) {
-  error = e.message;
+async function loadAll() {
+  account = await getAccount(id!);
+  if (!account) {
+    error = 'Account not found';
+    return;
+  }
+  transactions = await listTransactions(id!);
+  statistics = await getAccountStatistics(id!);
 }
 
-// Handle POST actions (interest calculation) if form submitted to this page
-if (Astro.request.method === 'POST') {
+try {
+  await loadAll();
+} catch (e: any) {
+  error = e?.message ?? String(e);
+}
+
+if (Astro.request.method === 'POST' && !error) {
     try {
         const formData = await Astro.request.formData();
         if (formData.get('action') === 'calculate_interest') {
-            await calculateInterest(id);
-            // Reload data
-             account = await getAccount(id);
-             transactions = await getTransactions(id);
-             statistics = await getAccountStatistics(id);
+            await calculateInterest(id!);
+            await loadAll();
         }
     } catch (e) {
-        // Handle error
+        console.error('Interest calculation failed', e);
     }
 }
 ---
@@ -44,7 +53,7 @@ if (Astro.request.method === 'POST') {
 <BaseLayout title={account ? `${account.name}'s Account` : 'Account Details'}>
     {error ? (
         <div class="text-center py-20">
-            <h1 class="text-2xl font-bold text-slate-800">Account Not Found</h1>
+            <h1 class="text-2xl font-bold text-slate-800">{error}</h1>
             <a href="/" class="text-indigo-600 underline mt-4 inline-block">Return Home</a>
         </div>
     ) : (

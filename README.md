@@ -135,7 +135,26 @@ Runs on `http://localhost:3000`.
 
 ## Deployment
 
-### Docker Compose (Recommended)
+### Vercel + Supabase
+
+The Astro frontend (with its `/api/*` routes) deploys to Vercel and talks to a Supabase Postgres database.
+
+1. **Create a Supabase project** at [supabase.com](https://supabase.com).
+2. **Run the schema migration**: open the Supabase SQL editor and paste the contents of [`supabase/migrations/0001_init.sql`](supabase/migrations/0001_init.sql). Run it once.
+3. **Grab your credentials** from Project Settings:
+   - `SUPABASE_URL` — Settings > Data API > Project URL
+   - `SUPABASE_SERVICE_ROLE_KEY` — Settings > API > `service_role` (server-only, never expose to the browser)
+4. **Connect Vercel to this repo.** The repo root already contains a `vercel.json` that builds from `frontend/` — no Root Directory change needed.
+5. **Set the env vars in Vercel** (Project > Settings > Environment Variables): `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY`. Apply to Production + Preview.
+6. **Redeploy.** The build should go green and the live URL will work end-to-end.
+
+> **Note on serverless:** Vercel can't run the legacy Express server (`backend/`) or the SQLite-backed cron job — both require persistent state. The Astro API routes under `frontend/src/pages/api/*` are the Vercel-compatible replacement, and the daily-interest cron is gone (use the "Check & Pay Interest" button per account, or wire up a Vercel Cron job later).
+
+### Mobile (Expo)
+
+The native app lives at the repo root (`app/`, `src/`) and uses `expo-sqlite` locally. To view on your phone, run `npx expo start` and scan the QR code with Expo Go. Migrating the Expo app to the shared Supabase backend is future work.
+
+### Docker Compose (Self-hosted)
 
 The included `docker-compose.yml` handles everything. Data persists in `./data/`:
 

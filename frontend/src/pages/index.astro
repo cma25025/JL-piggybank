@@ -2,16 +2,16 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import AccountCard from '../components/AccountCard';
 import { PlusCircle } from 'lucide-react';
-import { getAccounts } from '../utils/api';
+import { listAccounts } from '../lib/db';
 
-let accounts = [];
-let error = null;
+let accounts: any[] = [];
+let error: string | null = null;
 
 try {
-  accounts = await getAccounts();
-} catch (e) {
-  error = e.message;
-  console.error("Error fetching accounts:", e);
+  accounts = await listAccounts();
+} catch (e: any) {
+  error = e?.message ?? String(e);
+  console.error('Error fetching accounts:', e);
 }
 ---
 
@@ -33,7 +33,9 @@ try {
       <div class="bg-rose-50 text-rose-600 p-4 rounded-xl border border-rose-100">
         <p class="font-bold">Error loading accounts</p>
         <p class="text-sm">{error}</p>
-        <p class="text-xs mt-2">Make sure the backend is running.</p>
+        <p class="text-xs mt-2">
+          If this is a fresh deploy, set SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY in your Vercel project's environment variables and run the SQL migration in supabase/migrations.
+        </p>
       </div>
     )}
 

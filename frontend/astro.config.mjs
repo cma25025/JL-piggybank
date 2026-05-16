@@ -1,30 +1,15 @@
 import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
 import tailwind from '@astrojs/tailwind';
-import node from '@astrojs/node';
+import vercel from '@astrojs/vercel';
 
-// https://astro.build/config
 export default defineConfig({
   output: 'server',
-  adapter: node({
-    mode: 'standalone'
-  }),
+  adapter: vercel(),
   integrations: [react(), tailwind()],
-  server: {
-    port: 3000,
-    host: true
-  },
   vite: {
     ssr: {
       noExternal: ['lucide-react']
-    },
-    server: {
-      proxy: {
-        '/api': {
-          target: 'http://localhost:4000',
-          changeOrigin: true
-        }
-      }
     }
   }
 });

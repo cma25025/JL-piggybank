@@ -46,3 +46,14 @@ data/backups/
 # Legacy web app build artifacts
 frontend/dist/
 backend/node_modules/
+
+# Vercel
+.vercel/
+frontend/.vercel/
+
+# Env files
+.env
+.env.local
+.env.production
+frontend/.env
+frontend/.env.local
